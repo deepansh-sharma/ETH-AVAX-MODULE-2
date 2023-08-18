@@ -1,4 +1,4 @@
-# React Crypto ATM
+# ATM
 
 This is a simple React component for a Crypto ATM application. It allows users to connect their MetaMask wallet, view their account balance, deposit and withdraw ETH, check the owner's name and a simple calculator with limited operations.
 
