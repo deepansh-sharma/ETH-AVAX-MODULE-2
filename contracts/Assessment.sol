@@ -57,4 +57,18 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
+
+    function divide(uint a,uint b) public pure returns(uint){
+        return a/b;
+    }
+
+    function modulo(uint a,uint b) public pure returns(uint){
+        return a % b;
+    }
+    function increment(uint a) public pure returns(uint){
+        return a+1;
+    }
+    function decrement(uint b) public pure returns(uint){
+        return b-1;
+    }
 }

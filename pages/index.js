@@ -2,11 +2,20 @@ import {useState, useEffect} from "react";
 import {ethers} from "ethers";
 import atm_abi from "../artifacts/contracts/Assessment.sol/Assessment.json";
 
+
+  
+
 export default function HomePage() {
   const [ethWallet, setEthWallet] = useState(undefined);
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
+  const [div, setDivide]= useState(undefined);
+  const [mod, setMod]= useState(undefined);
+  const [inc, setIncrement]= useState(undefined);
+  const [dec, setDecrement]= useState(undefined);
+  const [inputA, setInputA] = useState("");
+  const [inputB, setInputB] = useState("");
   const buttonStyle = {
     backgroundColor: "#9BCDD2",
     color: "#fff",
@@ -91,6 +100,48 @@ export default function HomePage() {
     }
   }
 
+  const divide = async () => {
+    if (atm) {
+      const a = parseInt(inputA);
+      const b = parseInt(inputB);
+      const answer = await atm.divide(a,b);
+      setDivide(answer);
+    }
+}  
+
+const modulo = async () => {
+  if (atm) {
+    const a = parseInt(inputA);
+    const b = parseInt(inputB);
+    const answer = await atm.modulo(a,b);
+    setMod(answer);
+  }
+}  
+
+const increment = async () => {
+  if (atm) {
+    const a = parseInt(inputA);
+    const answer = await atm.increment(a);
+    setIncrement(answer);
+  }
+}  
+const decrement = async () => {
+  if (atm) {
+    const a = parseInt(inputA);
+    const answer = await atm.decrement(a);
+    setDecrement(answer);
+  }
+} 
+
+
+const handleInputAChange = (event) => {
+  setInputA(event.target.value);
+};
+
+const handleInputBChange = (event) => {
+  setInputB(event.target.value);
+};
+
   const initUser = () => {
     // Check to see if user has Metamask
     if (!ethWallet) {
@@ -117,64 +168,60 @@ export default function HomePage() {
 
     return (
       <div>
+      <div>
         <p>Your Account: {account}</p>
         <p>Your Balance: {balance}</p>
         <button onClick={deposit} style={buttonStyle} ><h5 style={buttonTextStyle}>Deposit 1 ETH</h5></button>
         <button onClick={withdraw} style={buttonStyle}><h5 style={buttonTextStyle} >Withdraw 1 ETH</h5></button>
       </div>
+      <div>
+        <h2>Let's Calculate</h2>
+        <p style={{ fontFamily: "Sans-serif",fontSize:"large",fontWeight:"bold" }}>div: {div? div.toString() : ""}</p>
+        <p style={{ fontFamily: "Sans-serif"  ,fontSize:"large",fontWeight:"bold"}}>mod: {mod ? mod.toString() : ""}</p>
+        <p style={{ fontFamily: "Sans-serif"  ,fontSize:"large",fontWeight:"bold"}}>increment: {inc ? inc.toString() : ""}</p>
+        <p style={{ fontFamily: "Sans-serif" ,fontSize:"large",fontWeight:"bold" }}>decrement: {dec ? dec.toString() : ""}</p>
+
+        <input
+          type="number"
+          placeholder="Enter value A"
+          value={inputA}
+          onChange={handleInputAChange}
+        />
+        <input
+          type="number"
+          placeholder="Enter value B"
+          value={inputB}
+          onChange={handleInputBChange}
+        />
+        <button style={{ backgroundColor: "white", color:"black" , border:" 5px solid pink",margin: "10px 10px"}} onClick={divide}>
+          divide
+        </button>
+        <button style={{ backgroundColor: "white", color:"black" , border:" 5px solid pink",margin: "10px 10px"}} onClick={modulo}>
+          modulo
+        </button>
+        <button style={{ backgroundColor: "white", color:"black" , border:" 5px solid pink",margin: "10px 10px"}} onClick={increment}>
+          increment
+        </button>
+        <button style={{ backgroundColor: "white", color:"black" , border:" 5px solid pink",margin: "10px 10px"}} onClick={decrement}>
+          decrement
+        </button>
+      </div>
+      </div>
+
+
     )
   }
 
   useEffect(() => {getWallet();}, []);
 
   return (
-    <main className="container">
+    <main className="container" style={{backgroundColor:"lightcyan"}}>
       <header><h1>Welcome to the Metacrafters ATM!</h1></header>
       {initUser()}
-      <style jsx>
-        {`
-          *{
-            background-color: grey;
-
-          }
-          .container {
-            text-align: center;
-            background-color: #272829;
-            background-size: cover;
-            color: #fff;
-            font-family: "Algerian", serif;
-          }
-
-          header {
-            padding: 34px;
-          }
-
-          h1 {
-            font-family: "Arial", serif;
-            font-size: 70px;
-            margin-bottom: 20px;
-            color:#9BCDD2;
-          }
-
-          p {
-            font-size: 22px;
-            margin-bottom: 20px;
-          }
-
-          .button {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 20px 30px;
-            font-size: 20px;
-            cursor: pointer;
-          }
-
-          button:hover {
-              background-color: ${buttonHoverStyle.backgroundColor};
-          }
-        `}
-      
+      <style jsx>{`
+        .container {
+          text-align: center      
+        } `}
       </style>
     </main>
   )
